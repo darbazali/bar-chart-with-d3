@@ -41,7 +41,54 @@ const xScale = d3.scaleTime()
 
   // Y Scale
 const yScale = d3.scaleLinear()
-  .range([0, width]);
+  .range([height, 0]);
 
 
 // define helper functions
+const parseTime = d3.timeParse("%Y-%m-%d");
+const formatTime = d3.timerFomat("%Y-%m-%d");
+
+
+
+// Grab data with Fetch API
+const api_url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json";
+
+fetch( api_url )
+.then( res => res.json() )
+.then( json => {
+  const data = json["data"]
+  drawBarChart(data)
+})
+
+
+const drawBarChart = data => {
+  // format time
+  data.forEach(d => {
+    d[0] = parseTime(d[0])
+    d[1] = +d[1]
+  });
+
+  // define domains for the scales
+  xScale.domain(d3.extent( d => d[0]))
+  yScale.domain(d3.extent( d => d[1] )).nice()
+
+  // Define Axes
+  const xAxis = d3.axisBottom(xScale);
+  const yAxis = d3.axisLeft(yScale);
+
+  // draw X Axis
+  svgGroups
+    .append('g')
+    .attr('id', 'x-axis')
+    .attr('transform', `translate(0, ${height})`)
+    .call(xAxis);
+
+  svgGroups
+    .append('g')
+    .attr('id', 'y-axis')
+    .call(yScale)
+
+
+    
+
+}
