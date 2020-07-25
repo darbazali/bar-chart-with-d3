@@ -9,12 +9,13 @@ body {
 }
 
 #container {
-    width: 85vw;
+    width: 80vw;
+    max-width: 1100px;
     padding: 1rem;
     margin: 3rem auto;
     background-color: #F8F8F8;
     border-radius: 15px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.116);
 }
 
 #container h2#title {
@@ -49,6 +50,11 @@ body {
 #gdp-title:not(svg) {
     transform-origin: 130px 100px;
     font-size: 12px;
+}
+
+#author {
+    text-align: center;
+    opacity: 0.9;
 }
 @media (max-width: 760px) {
     #container h2#title {
