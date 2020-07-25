@@ -46,7 +46,7 @@ const yScale = d3.scaleLinear()
 
 // define helper functions
 const parseTime = d3.timeParse("%Y-%m-%d");
-const formatTime = d3.timerFomat("%Y-%m-%d");
+const formatTime = d3.timeFormat("%Y-%m-%d");
 
 
 
@@ -64,13 +64,16 @@ fetch( api_url )
 const drawBarChart = data => {
   // format time
   data.forEach(d => {
-    d[0] = parseTime(d[0])
+    d[0] = parseTime(d[0]);
     d[1] = +d[1]
   });
 
+  const barWidth = width / data.length;
+
+
   // define domains for the scales
-  xScale.domain(d3.extent( d => d[0]))
-  yScale.domain(d3.extent( d => d[1] )).nice()
+  xScale.domain(d3.extent(data, d => d[0]))
+  yScale.domain(d3.extent(data, d => d[1] )).nice()
 
   // Define Axes
   const xAxis = d3.axisBottom(xScale);
@@ -86,9 +89,32 @@ const drawBarChart = data => {
   svgGroups
     .append('g')
     .attr('id', 'y-axis')
-    .call(yScale)
+    .call(yAxis)
+
+  // create tooltip
+  const tooltip = container
+    .append('div')
+    .attr('id', 'tooltip')
 
 
-    
+  // plot the chart
+  svgGroups
+    .selectAll('rect')
+    .data(data)
+    .enter()
+    .append('rect')
 
+    // set data points
+    .attr('data-date', d => formatTime(d[0]))
+    .attr('data-gdp', d => d[1])
+
+    // set coordinates
+    .attr('x', (d, i) => ( width / data.length ) * i )
+    .attr('y', d => yScale(d[1]))
+
+    // set size
+    .attr('width', barWidth)
+    .attr('height', d => height - yScale(d[1]))
+
+    .attr('class', 'bar')
 }
