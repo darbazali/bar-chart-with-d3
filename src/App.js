@@ -48,6 +48,24 @@ const yScale = d3.scaleLinear()
 const parseTime = d3.timeParse("%Y-%m-%d");
 const formatTime = d3.timeFormat("%Y-%m-%d");
 
+// tooltip drawer function
+const drawTooltip = (d, tooltip ) => {
+  tooltip
+    .style('opacity', '1')
+    .style('left', `${d3.event.layerX - 100}px`)
+    .style('top', `${d3.event.layerY - 40}px`)
+
+    .attr('data-date', formatTime(d[0]))
+    
+    .text(() => {
+      let year = d[0].getFullYear();
+      let quarter = (d[0].getMonth() == 0) ? "Q1" : 
+        (d[0].getMonth() == 3 ) ? "Q2" :
+        (d[0].getMonth() == 6 ) ? "Q3" : "Q4"
+      return `${year} ${quarter} $${d[1]} Billion`
+    })
+}
+
 
 
 // Grab data with Fetch API
@@ -103,6 +121,13 @@ const drawBarChart = data => {
     .data(data)
     .enter()
     .append('rect')
+
+    // add tooltip
+    .on('mouseenter', d => drawTooltip(d, tooltip))
+    .on('mouseout', () => {
+      tooltip
+        .style('opacity', 0)
+    })
 
     // set data points
     .attr('data-date', d => formatTime(d[0]))
