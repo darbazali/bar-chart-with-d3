@@ -1,6 +1,7 @@
 
 // import d3 package
 import * as d3 from 'd3'
+import { svg } from 'd3';
 
 // create container
 const container = d3.select('#container')
@@ -8,7 +9,7 @@ const container = d3.select('#container')
   // Create the titel
 container.append('h2')
   .attr('id', 'title')
-  .text('Gross Domestic Product')
+  .text('United States GDP')
 
 // define margins
 const margin = {
@@ -33,6 +34,15 @@ const svgGroups = canvas
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
+// create title fot X Axis
+svgGroups
+    .append('g')
+    .attr('id', 'gdp-title')
+
+    .append('text')
+    .text('Gross Domestic Product')
+    
+
 
 // define scales
   // X Scale
@@ -53,7 +63,7 @@ const drawTooltip = (d, tooltip ) => {
   tooltip
     .style('opacity', '1')
     .style('left', `${d3.event.layerX - 100}px`)
-    .style('top', `${d3.event.layerY - 40}px`)
+    .style('top', `${d3.event.layerY - 70}px`)
 
     .attr('data-date', formatTime(d[0]))
     
