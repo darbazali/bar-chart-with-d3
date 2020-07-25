@@ -33,7 +33,15 @@ const svgGroups = canvas
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-  
+
 // define scales
+  // X Scale
+const xScale = d3.scaleTime()
+  .range([0, width]);
+
+  // Y Scale
+const yScale = d3.scaleLinear()
+  .range([0, width]);
+
 
 // define helper functions
