@@ -11,13 +11,29 @@ container.append('h2')
   .text('Gross Domestic Product')
 
 // define margins
+const margin = {
+  top: 20,
+  right: 20,
+  bottom: 20,
+  left: 50
+}
 
 // define dimensions
+const width = 800 - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
 
 // create the svg canvas
+const canvas = container
+  .append('svg')
+  .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
+
 
 // create a group for svg elements
+const svgGroups = canvas
+  .append('g')
+  .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
+  
 // define scales
 
 // define helper functions
